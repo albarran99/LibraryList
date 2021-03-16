@@ -1,15 +1,18 @@
 package org.iesfm.library;
 
+import org.iesfm.library.exception.InvalidCpException;
+
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 public class Library implements ILibrary {
     private String name;
-    private LinkedList<Book> books;
-    private LinkedList<Member> members;
-    private LinkedList<BookLend> bookLends;
+    private List<Book> books;
+    private List<Member> members;
+    private List<BookLend> bookLends;
 
-    public Library(String name, LinkedList<Book> books, LinkedList<Member> members, LinkedList<BookLend> bookLends) {
+    public Library(String name, List<Book> books, List<Member> members, List<BookLend> bookLends) {
         this.name = name;
         this.books = books;
         this.members = members;
@@ -17,14 +20,29 @@ public class Library implements ILibrary {
     }
 
     @Override
-    public LinkedList<Book> findBooks(String genre) {
-        LinkedList<Book> genreBooks = new LinkedList<>();
+    public List<Book> findBooks(String genre) {
+        List<Book> genreBooks = new LinkedList<>();
         for(Book book: books) {
             if(book.hasGenre(genre)) {
                 genreBooks.add(book);
             }
         }
         return genreBooks;
+    }
+
+    @Override
+    public List<Member> findMembers(int cp) throws InvalidCpException {
+        if(cp < 1000 || cp > 54000) {
+            throw new InvalidCpException();
+        }
+        LinkedList<Member> cpMembers = new LinkedList<>();
+        for(Member member: members) {
+            if(member.getCp() == cp) {
+                cpMembers.add(member);
+            }
+        }
+
+        return cpMembers;
     }
 
     public String getName() {
@@ -35,27 +53,27 @@ public class Library implements ILibrary {
         this.name = name;
     }
 
-    public LinkedList<Book> getBooks() {
+    public List<Book> getBooks() {
         return books;
     }
 
-    public void setBooks(LinkedList<Book> books) {
+    public void setBooks(List<Book> books) {
         this.books = books;
     }
 
-    public LinkedList<Member> getMembers() {
+    public List<Member> getMembers() {
         return members;
     }
 
-    public void setMembers(LinkedList<Member> members) {
+    public void setMembers(List<Member> members) {
         this.members = members;
     }
 
-    public LinkedList<BookLend> getBookLends() {
+    public List<BookLend> getBookLends() {
         return bookLends;
     }
 
-    public void setBookLends(LinkedList<BookLend> bookLends) {
+    public void setBookLends(List<BookLend> bookLends) {
         this.bookLends = bookLends;
     }
 

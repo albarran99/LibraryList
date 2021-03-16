@@ -1,13 +1,14 @@
 package org.iesfm.library;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 public class Book {
     private int isbn;
     private String title;
     private String author;
-    private LinkedList<String> genres;
+    private List<String> genres;
 
     public Book(int isbn, String title, String author, LinkedList<String> genres) {
         this.isbn = isbn;
@@ -44,7 +45,7 @@ public class Book {
         this.author = author;
     }
 
-    public LinkedList<String> getGenres() {
+    public List<String> getGenres() {
         return genres;
     }
 

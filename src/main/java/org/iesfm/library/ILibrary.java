@@ -1,8 +1,12 @@
 package org.iesfm.library;
 
-import java.util.LinkedList;
+import org.iesfm.library.exception.InvalidCpException;
+
+import java.util.List;
 
 public interface ILibrary {
 
-    LinkedList<Book> findBooks(String genre);
+    List<Book> findBooks(String genre);
+
+    List<Member> findMembers(int cp) throws InvalidCpException;
 }
