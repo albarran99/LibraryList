@@ -10,7 +10,7 @@ public class Book {
     private String author;
     private List<String> genres;
 
-    public Book(int isbn, String title, String author, LinkedList<String> genres) {
+    public Book(int isbn, String title, String author, List<String> genres) {
         this.isbn = isbn;
         this.title = title;
         this.author = author;

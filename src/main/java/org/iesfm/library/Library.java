@@ -1,6 +1,7 @@
 package org.iesfm.library;
 
 import org.iesfm.library.exception.InvalidCpException;
+import org.iesfm.library.exception.InvalidNifException;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -19,11 +20,21 @@ public class Library implements ILibrary {
         this.bookLends = bookLends;
     }
 
+    private Member findMember(String nif) {
+        Member found = null;
+        for (Member member : members) {
+            if (nif.equals(member.getNif())) {
+                found = member;
+            }
+        }
+        return found;
+    }
+
     @Override
     public List<Book> findBooks(String genre) {
         List<Book> genreBooks = new LinkedList<>();
-        for(Book book: books) {
-            if(book.hasGenre(genre)) {
+        for (Book book : books) {
+            if (book.hasGenre(genre)) {
                 genreBooks.add(book);
             }
         }
@@ -32,18 +43,55 @@ public class Library implements ILibrary {
 
     @Override
     public List<Member> findMembers(int cp) throws InvalidCpException {
-        if(cp < 1000 || cp > 54000) {
+        if (cp < 1000 || cp > 54000) {
             throw new InvalidCpException();
         }
         LinkedList<Member> cpMembers = new LinkedList<>();
-        for(Member member: members) {
-            if(member.getCp() == cp) {
+        for (Member member : members) {
+            if (member.getCp() == cp) {
                 cpMembers.add(member);
             }
         }
 
         return cpMembers;
     }
+
+    @Override
+    public List<BookLend> getBookLendByNif(String nif) throws InvalidNifException {
+        Member member = findMember(nif);
+        if (member == null) {
+            throw new InvalidNifException();
+        }
+        List<BookLend> memberLends = new LinkedList<>();
+        for (BookLend bookLend : bookLends) {
+            if (bookLend.getMemberNif().equals(nif)) {
+                memberLends.add(bookLend);
+            }
+        }
+        return memberLends;
+    }
+
+    @Override
+    public List<Book> getBooksByBookLend(String nif) throws InvalidNifException {
+        List<BookLend> memberLends = getBookLendByNif(nif);
+        List<Book> books = new LinkedList<>();
+        for (BookLend bookLend : memberLends) {
+            Book book = findBook(bookLend.getIsbn());
+            books.add(book);
+        }
+        return books;
+    }
+
+    public Book findBook(int isbn) {
+        Book found = null;
+        for (Book book : books) {
+            if (isbn == book.getIsbn()) {
+                found = book;
+            }
+        }
+        return found;
+    }
+
 
     public String getName() {
         return name;
